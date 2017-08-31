@@ -49,7 +49,7 @@ Simple Polymer 2.0 element for integrating with NASA&#39;s Astromony Picture of 
 | Event | Desrciption |
 | ----- | ----------- |
 | `request-complete` | the request completed successfully |
-| `request-crror` | the request completed with an error |
+| `request-error` | the request completed with an error |
 
 Example Useage
 ```html
