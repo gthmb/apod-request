@@ -8,7 +8,7 @@ Simple Polymer 2.0 element for integrating with NASA&#39;s Astromony Picture of 
 <custom-element-demo>
   <template>
     <script src="../webcomponentsjs/webcomponents-lite.js"></script>
-    <link rel="import" href="scatter-image.html">
+    <link rel="import" href="apod-request.html">
     <div class="result-container">
     <pre id="results" class="result">Result will show here</pre>
     </div>
