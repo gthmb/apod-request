@@ -1,0 +1,153 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="apod-request">
+    <template>
+    </template>
+
+    <script>
+        /**
+         * `apod-request`
+         * Simple Polymer 2.0 element for integrating with NASA&#39;s Astromony Picture of the Date API
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         *
+         * @event request-error
+         * @event request-complete
+         */
+        class ApodRequest extends Polymer.Element {
+            static get is() {
+                return 'apod-request';
+            }
+            
+            static get properties() {
+                return {
+
+                    /**
+                     *  Your NASA api key. [Get one here](https://api.nasa.gov/index.html#apply-for-an-api-key)
+                     **/
+                    apiKey: {
+                        type: String,
+                        value: 'my-nasa-api-key',
+                        observer: '_reRequest'
+                    },
+
+                    /**
+                     * Flag to request High Definition version of the image (if available)
+                     **/
+                    hd: {
+                        type: Boolean,
+                        value: false,
+                        observer: '_reRequest'
+                    },
+
+                    /**
+                     *  String in format: YYYY-MM-DD | The date for which you'd like the image
+                     **/
+                    date: {
+                        type: String,
+                        value: null,
+                        observer: '_reRequest'
+                    },
+
+                    /**
+                     *  String that reflects the current status of the request: 'loading', 'success', and 'error'
+                     **/
+                    status: {
+                        type: String,
+                        value: 'loading',
+                        reflectToAttribute: true,
+                        readOnly: true,
+                        notify: true
+                    },
+
+                    /**
+                     *  The url used to make the last request
+                     **/
+                    requestUrl: {
+                        type: String,
+                        value: null,
+                        readOnly: true,
+                        notify: true
+                    },
+
+                    _baseUrl: {
+                        type: String,
+                        value: 'https://api.nasa.gov/planetary/apod?api_key='
+                    },
+
+                    _dateFormat: {
+                        type: RegExp,
+                        value: RegExp = /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/
+                    },
+
+                    _xhr: {
+                        type: Object,
+                        value: null
+                    }
+                };
+            }
+
+            ready() {
+                super.ready();
+                this.makeRequest();
+            }
+
+            _reRequest() {
+                if( this._xhr ) {
+                    this.cancelRequest();
+                    this.makeRequest();
+                }
+            }
+
+            makeRequest() {
+                let requestUrl = this._baseUrl + this.apiKey;
+
+                if( !this.apiKey ) {
+                    return;
+                }
+
+                if (this.hd) {
+                    requestUrl += '&hd=True'
+                }
+
+                if (this.date && this._dateFormat.test(this.date)) {
+                    requestUrl += '&date=' + this.date;
+                }
+
+                this._setStatus('loading');
+
+                this._xhr = new XMLHttpRequest();
+                this._xhr.addEventListener("load", () => {
+                    const data = JSON.parse(this._xhr.responseText);
+
+                    if (this._xhr.status >= 400) {
+                        this._setStatus('error');
+                        this.dispatchEvent(new CustomEvent('request-error', { bubbles: true, composed: true, detail: data }));
+                        return;
+                    }
+                    
+                    this._setStatus('success');
+                    this.dispatchEvent(new CustomEvent('request-complete', { bubbles: true, composed: true, detail: data }));
+                });
+                this._xhr.addEventListener("error", (evt) => {
+                    this._setStatus('error');
+                    this.dispatchEvent(new CustomEvent('request-error', { bubbles: true, composed: true, detail: data}));
+                });
+                this._setRequestUrl(requestUrl);
+                this._xhr.open("GET", requestUrl);
+                this._xhr.send();
+            }
+
+            cancelRequest() {
+                if( this._xhr ) {
+                    this._xhr.abort();
+                    this._setStatus('cancelled');
+                }
+            }
+        }
+
+        window.customElements.define(ApodRequest.is, ApodRequest);
+    </script>
+</dom-module>

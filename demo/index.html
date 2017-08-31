@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>apod-request demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../apod-request.html">
+
+    <custom-style>
+        <style is="custom-style" include="demo-pages-shared-styles">
+            .result-container {
+                overflow: scroll;
+            }
+        </style>
+    </custom-style>
+</head>
+
+<body>
+    <div class="vertical-section-container centered">
+        <h3>Basic apod-request demo</h3>
+        <demo-snippet>
+            <template>
+                <div class="result-container">
+                    <pre id="foo-result" class="result"></pre>
+                </div>
+                <apod-request 
+                    id="foo" 
+                    api-key="MY_API_KEY"
+                ></apod-request>
+                <script>
+                    document.querySelector('#foo').addEventListener('request-complete', (evt) => {
+                        document.querySelector("#foo-result").innerHTML = JSON.stringify(evt.detail, null, 2);
+                    });
+                    document.querySelector('#foo').addEventListener('request-error', (evt) => {
+                        document.querySelector("#foo-result").innerHTML = JSON.stringify(evt.detail, null, 2);
+                    });
+                </script>
+            </template>
+        </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+        <h3>Specifing a custom date</h3>
+        <demo-snippet>
+            <template>
+                <div class="result-container">
+                    <pre id="bar-result" class="result"></pre>
+                </div>
+                <apod-request 
+                    id="bar" 
+                    api-key="MY_API_KEY" 
+                    date="2017-08-21"
+                ></apod-request>
+                <script>
+                    document.querySelector('#bar').addEventListener('request-complete', (evt) => {
+                        document.querySelector("#bar-result").innerHTML = JSON.stringify(evt.detail, null, 2);
+                    });
+                    document.querySelector('#bar').addEventListener('request-error', (evt) => {
+                        document.querySelector("#bar-result").innerHTML = JSON.stringify(evt.detail, null, 2);
+                    });
+                </script>
+            </template>
+        </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+            <h3>Requesting</h3>
+            <demo-snippet>
+                <template>
+                    <div class="result-container">
+                        <pre id="baz-result" class="result"></pre>
+                    </div>
+                    <apod-request 
+                        id="baz" 
+                        api-key="MY_API_KEY" 
+                        date="2017-08-21"
+                    ></apod-request>
+
+                    <button onclick="changeDate()">Change Date</button>
+                    
+                    <script>
+                        const baz = document.querySelector('#baz');
+                        baz.addEventListener('request-complete', (evt) => {
+                            document.querySelector("#baz-result").innerHTML = JSON.stringify(evt.detail, null, 2);
+                        });
+                        baz.addEventListener('request-error', (evt) => {
+                            document.querySelector("#baz-result").innerHTML = JSON.stringify(evt.detail, null, 2);
+                        });
+
+                        const dates = [ '2017-08-22', '2017-08-23', '2017-08-24', '2017-08-21'];
+                        let indx = 0;
+                        changeDate = () => {
+                            baz.setAttribute('date', dates[indx]);
+                            indx = ++indx % dates.length;
+                        };
+                    </script>
+                </template>
+            </demo-snippet>
+        </div>
+
+        <script>
+            this.document.querySelectorAll('apod-request').forEach( apod => {
+                apod.setAttribute('api-key', 'Q2S9UOPbcMVSPCCL8uIjI7Mq7dTgGnW4VBUiiuo1');
+            })
+        </script>
+</body>
+
+</html>

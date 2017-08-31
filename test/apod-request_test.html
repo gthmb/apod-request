@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>apod-request test</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../apod-request.html">
+</head>
+
+<body>
+
+    <test-fixture id="BasicTestFixture">
+        <template>
+            <apod-request api-key="NNKOjkoul8n1CH18TWA9gwngW1s1SmjESPjNoUFo"></apod-request>
+        </template>
+    </test-fixture>
+
+    <test-fixture id="CustomDateFixture">
+        <template>
+            <apod-request api-key="NNKOjkoul8n1CH18TWA9gwngW1s1SmjESPjNoUFo" date="2017-08-21"></apod-request>
+        </template>
+    </test-fixture>
+
+    <test-fixture id="HdFixture">
+        <template>
+            <apod-request api-key="NNKOjkoul8n1CH18TWA9gwngW1s1SmjESPjNoUFo" date="2017-08-21" hd="true"></apod-request>
+        </template>
+    </test-fixture>
+
+    <test-fixture id="BadApiFixture">
+        <template>
+            <apod-request api-key="bad-key" date="2017-08-21" hd="true"></apod-request>
+        </template>
+    </test-fixture>
+
+    <script>
+        suite('apod-request', function () {
+
+            test('positive path `request-complete` test', function (done) {
+                var element = fixture('BasicTestFixture');
+                assert.equal(element.getAttribute('status'), 'loading');
+                element.addEventListener('request-complete', () => {
+                    assert.equal(element.getAttribute('status'), 'success');
+                    done();
+                });
+            });
+
+            test('positive path `status` test', function (done) {
+                var element = fixture('BasicTestFixture');
+                assert.equal(element.getAttribute('status'), 'loading');
+                element.addEventListener('status-changed', () => {
+                    assert.equal(element.getAttribute('status'), 'success');
+                    done();
+                });
+            });
+
+            test('positive path `custom date` test', function (done) {
+                var element = fixture('CustomDateFixture');
+                assert.equal(element.getAttribute('status'), 'loading');
+                element.addEventListener('request-complete', () => {
+                    assert.equal(element.getAttribute('status'), 'success');
+                    done();
+                });
+            });
+
+            test('positive path `hd` test', function (done) {
+                var element = fixture('HdFixture');
+                assert.equal(element.getAttribute('status'), 'loading');
+                element.addEventListener('request-complete', () => {
+                    assert.equal(element.getAttribute('status'), 'success');
+                    done();
+                });
+            });
+
+            test('negative path `request-error` test', function (done) {
+                var element = fixture('BadApiFixture');
+                assert.equal(element.getAttribute('status'), 'loading');
+                element.addEventListener('request-error', () => {
+                    assert.equal(element.getAttribute('status'), 'error');
+                    done();
+                });
+            });
+
+            test('negative path `status` test', function (done) {
+                var element = fixture('BadApiFixture');
+                assert.equal(element.getAttribute('status'), 'loading');
+                element.addEventListener('status-changed', () => {
+                    assert.equal(element.getAttribute('status'), 'error');
+                    done();
+                });
+            });
+
+            test('re-requesting', function (done) {
+                var element = fixture('BasicTestFixture'); 
+                let completeCount = 0;               
+                element.addEventListener('request-complete', () => {
+                    completeCount++
+
+                    switch( completeCount ) {
+                        case 1:
+                            element.makeRequest();
+                            break;
+
+                        case 2:
+                            element.setAttribute('date','2017-08-21');
+                            break;
+
+                        case 3: 
+                            element.setAttribute('hd', true);
+                            break;
+
+                        case 4:
+                            element.setAttribute('api-key', "");
+                            element.getAttribute('status', "cancelled");
+                            element.setAttribute('api-key', "NNKOjkoul8n1CH18TWA9gwngW1s1SmjESPjNoUFo");
+                            element.getAttribute('status', "loading");
+                            break;
+
+                        case 5:
+                            done();
+                    }                    
+                });
+            });
+        });
+    </script>
+
+</body>
+
+</html>
