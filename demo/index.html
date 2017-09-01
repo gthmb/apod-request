@@ -36,10 +36,10 @@
                 ></apod-request>
                 <script>
                     document.querySelector('#foo').addEventListener('data-changed', (evt) => {
-                        document.querySelector("#foo-result").innerHTML = JSON.stringify(evt.detail, null, 2);
+                        document.querySelector("#foo-result").innerHTML = JSON.stringify(foo.data, null, 2);
                     });
                     document.querySelector('#foo').addEventListener('request-error', (evt) => {
-                        document.querySelector("#foo-result").innerHTML = JSON.stringify(evt.detail, null, 2);
+                        document.querySelector("#foo-result").innerHTML = JSON.stringify(foo.data, null, 2);
                     });
                 </script>
             </template>
@@ -60,10 +60,10 @@
                 ></apod-request>
                 <script>
                     document.querySelector('#bar').addEventListener('data-changed', (evt) => {
-                        document.querySelector("#bar-result").innerHTML = JSON.stringify(evt.detail, null, 2);
+                        document.querySelector("#bar-result").innerHTML = JSON.stringify(bar.data, null, 2);
                     });
                     document.querySelector('#bar').addEventListener('request-error', (evt) => {
-                        document.querySelector("#bar-result").innerHTML = JSON.stringify(evt.detail, null, 2);
+                        document.querySelector("#bar-result").innerHTML = JSON.stringify(bar.data, null, 2);
                     });
                 </script>
             </template>
@@ -88,10 +88,10 @@
                     <script>
                         const baz = document.querySelector('#baz');
                         baz.addEventListener('data-changed', (evt) => {
-                            document.querySelector("#baz-result").innerHTML = JSON.stringify(evt.detail, null, 2);
+                            document.querySelector("#baz-result").innerHTML = JSON.stringify(baz.data, null, 2);
                         });
                         baz.addEventListener('request-error', (evt) => {
-                            document.querySelector("#baz-result").innerHTML = JSON.stringify(evt.detail, null, 2);
+                            document.querySelector("#baz-result").innerHTML = JSON.stringify(baz.data, null, 2);
                         });
 
                         const dates = [ '2017-08-22', '2017-08-23', '2017-08-24', '2017-08-21'];

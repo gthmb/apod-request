@@ -23,11 +23,15 @@ Simple Polymer 2.0 element for integrating with NASA&#39;s Astromony Picture of 
 
 <!-- example handling -->
 <script>
-  document.querySelector('#myRequest').addEventListener('data-changed', (evt) => {
-    document.querySelector("#results").innerHTML = JSON.stringify(evt.detail, null, 2);
+  const request = document.querySelector('#myRequest'),
+  results = document.querySelector("#results");
+
+  req.addEventListener('data-changed', (evt) => {
+    results.innerHTML = JSON.stringify(req.data, null, 2);
   });
-  document.querySelector('#myRequest').addEventListener('request-error', (evt) => {
-    document.querySelector("#results").innerHTML = JSON.stringify(evt.detail, null, 2);
+  
+  req.addEventListener('request-error', (evt) => {
+    results.innerHTML = JSON.stringify(evt.detail, null, 2);
   });
 </script>
 ```
