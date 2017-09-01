@@ -1,0 +1,58 @@
+<script>
+    'use strict'
+
+    const gthmb = {};
+
+    gthmb.ApodRequestProperties = Polymer.dedupingMixin(superClass => {
+
+        /**
+         * @polymer
+         * @mixinClass
+         */
+        class ApodRequestProperties extends superClass {
+            static get properties() {
+                return {
+                    /**
+                     *  Your NASA api key. [Get one here](https://api.nasa.gov/index.html#apply-for-an-api-key)
+                     **/
+                    apiKey: {
+                        type: String,
+                        value: 'my-nasa-api-key',
+                        observer: '_reRequest'
+                    },
+
+                    /**
+                     * Flag to request High Definition version of the image (if available)
+                     **/
+                    hd: {
+                        type: Boolean,
+                        value: false,
+                        observer: '_reRequest'
+                    },
+
+                    /**
+                     *  String in format: YYYY-MM-DD | The date for which you'd like the image
+                     **/
+                    date: {
+                        type: String,
+                        value: null,
+                        observer: '_reRequest'
+                    },
+
+                    /**
+                     *  String that reflects the current status of the request: 'loading', 'success', and 'error'
+                     **/
+                    status: {
+                        type: String,
+                        value: 'loading',
+                        reflectToAttribute: true,
+                        readOnly: true,
+                        notify: true
+                    },
+                }
+            }
+        }
+
+        return ApodRequestProperties;
+    })
+</script>
