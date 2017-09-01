@@ -17,19 +17,19 @@
 
     <test-fixture id="BasicTestFixture">
         <template>
-            <apod-request api-key="NNKOjkoul8n1CH18TWA9gwngW1s1SmjESPjNoUFo"></apod-request>
+            <apod-request api-key="Q2S9UOPbcMVSPCCL8uIjI7Mq7dTgGnW4VBUiiuo1"></apod-request>
         </template>
     </test-fixture>
 
     <test-fixture id="CustomDateFixture">
         <template>
-            <apod-request api-key="NNKOjkoul8n1CH18TWA9gwngW1s1SmjESPjNoUFo" date="2017-08-21"></apod-request>
+            <apod-request api-key="Q2S9UOPbcMVSPCCL8uIjI7Mq7dTgGnW4VBUiiuo1" date="2017-08-21"></apod-request>
         </template>
     </test-fixture>
 
     <test-fixture id="HdFixture">
         <template>
-            <apod-request api-key="NNKOjkoul8n1CH18TWA9gwngW1s1SmjESPjNoUFo" date="2017-08-21" hd="true"></apod-request>
+            <apod-request api-key="Q2S9UOPbcMVSPCCL8uIjI7Mq7dTgGnW4VBUiiuo1" date="2017-08-21" hd="true"></apod-request>
         </template>
     </test-fixture>
 
@@ -42,11 +42,12 @@
     <script>
         suite('apod-request', function () {
 
-            test('positive path `request-complete` test', function (done) {
+            test('positive path `data-changed` test', function (done) {
                 var element = fixture('BasicTestFixture');
                 assert.equal(element.getAttribute('status'), 'loading');
-                element.addEventListener('request-complete', () => {
+                element.addEventListener('data-changed', () => {
                     assert.equal(element.getAttribute('status'), 'success');
+                    console.log( typeof element.getAttribute('data') );
                     done();
                 });
             });
@@ -63,7 +64,7 @@
             test('positive path `custom date` test', function (done) {
                 var element = fixture('CustomDateFixture');
                 assert.equal(element.getAttribute('status'), 'loading');
-                element.addEventListener('request-complete', () => {
+                element.addEventListener('data-changed', () => {
                     assert.equal(element.getAttribute('status'), 'success');
                     done();
                 });
@@ -72,7 +73,7 @@
             test('positive path `hd` test', function (done) {
                 var element = fixture('HdFixture');
                 assert.equal(element.getAttribute('status'), 'loading');
-                element.addEventListener('request-complete', () => {
+                element.addEventListener('data-changed', () => {
                     assert.equal(element.getAttribute('status'), 'success');
                     done();
                 });
@@ -99,7 +100,7 @@
             test('re-requesting', function (done) {
                 var element = fixture('BasicTestFixture'); 
                 let completeCount = 0;               
-                element.addEventListener('request-complete', () => {
+                element.addEventListener('data-changed', () => {
                     completeCount++
 
                     switch( completeCount ) {
@@ -118,7 +119,7 @@
                         case 4:
                             element.setAttribute('api-key', "");
                             element.getAttribute('status', "cancelled");
-                            element.setAttribute('api-key', "NNKOjkoul8n1CH18TWA9gwngW1s1SmjESPjNoUFo");
+                            element.setAttribute('api-key', "Q2S9UOPbcMVSPCCL8uIjI7Mq7dTgGnW4VBUiiuo1");
                             element.getAttribute('status', "loading");
                             break;
 

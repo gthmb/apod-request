@@ -19,11 +19,11 @@ Simple Polymer 2.0 element for integrating with NASA&#39;s Astromony Picture of 
 -->
 ```html
 <!-- the tag -->
-<apod-request id="myRequest" api-key="Q2S9UOPbcMVSPCCL8uIjI7Mq7dTgGnW4VBUiiuo1"></apod-request>
+<apod-request id="myRequest" api-key="MY_API_KEY"></apod-request>
 
-<!-- exmaple handling -->
+<!-- example handling -->
 <script>
-  document.querySelector('#myRequest').addEventListener('request-complete', (evt) => {
+  document.querySelector('#myRequest').addEventListener('data-changed', (evt) => {
     document.querySelector("#results").innerHTML = JSON.stringify(evt.detail, null, 2);
   });
   document.querySelector('#myRequest').addEventListener('request-error', (evt) => {
@@ -34,11 +34,11 @@ Simple Polymer 2.0 element for integrating with NASA&#39;s Astromony Picture of 
 
 ## Default usage
 ```html
-<apod-request api-key="XXX"></apod-request>
+<apod-request api-key="MY_API_KEY"></apod-request>
 <!-- to listen for an event -->
 <script>
     const request = document.querySelector('apod-request');
-    request.addEventListener('request-complete', (data) => {
+    request.addEventListener('data-changed', (data) => {
         console.log(data.detail.url);
         ...
     }

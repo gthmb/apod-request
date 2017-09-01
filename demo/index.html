@@ -35,7 +35,7 @@
                     api-key="MY_API_KEY"
                 ></apod-request>
                 <script>
-                    document.querySelector('#foo').addEventListener('request-complete', (evt) => {
+                    document.querySelector('#foo').addEventListener('data-changed', (evt) => {
                         document.querySelector("#foo-result").innerHTML = JSON.stringify(evt.detail, null, 2);
                     });
                     document.querySelector('#foo').addEventListener('request-error', (evt) => {
@@ -59,7 +59,7 @@
                     date="2017-08-21"
                 ></apod-request>
                 <script>
-                    document.querySelector('#bar').addEventListener('request-complete', (evt) => {
+                    document.querySelector('#bar').addEventListener('data-changed', (evt) => {
                         document.querySelector("#bar-result").innerHTML = JSON.stringify(evt.detail, null, 2);
                     });
                     document.querySelector('#bar').addEventListener('request-error', (evt) => {
@@ -71,7 +71,7 @@
     </div>
 
     <div class="vertical-section-container centered">
-            <h3>Requesting</h3>
+            <h3>Re-requesting after updating properties</h3>
             <demo-snippet>
                 <template>
                     <div class="result-container">
@@ -87,7 +87,7 @@
                     
                     <script>
                         const baz = document.querySelector('#baz');
-                        baz.addEventListener('request-complete', (evt) => {
+                        baz.addEventListener('data-changed', (evt) => {
                             document.querySelector("#baz-result").innerHTML = JSON.stringify(evt.detail, null, 2);
                         });
                         baz.addEventListener('request-error', (evt) => {

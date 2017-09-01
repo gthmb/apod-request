@@ -72,6 +72,17 @@
                         notify: true
                     },
 
+                    /**
+                     *  The data object returned from the last successful request
+                     **/
+                    data: {
+                        type: Object,
+                        value: null,
+                        reflectToAttribute: true,
+                        readOnly: true,
+                        notify: true
+                    },
+
                     _baseUrl: {
                         type: String,
                         value: 'https://api.nasa.gov/planetary/apod?api_key='
@@ -129,7 +140,7 @@
                     }
                     
                     this._setStatus('success');
-                    this.dispatchEvent(new CustomEvent('request-complete', { bubbles: true, composed: true, detail: data }));
+                    this._setData(data);
                 });
                 this._xhr.addEventListener("error", (evt) => {
                     this._setStatus('error');
