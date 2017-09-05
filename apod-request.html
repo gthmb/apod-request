@@ -115,7 +115,7 @@
                 this._debouncer = Polymer.Debouncer.debounce(
                     this._debouncer,
                     Polymer.Async.timeOut.after(300),
-                    this.makeRequest
+                    () => { this.makeRequest(); }
                 );
             }
 
