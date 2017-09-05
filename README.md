@@ -19,7 +19,7 @@ Simple Polymer 2.0 element for integrating with NASA&#39;s Astromony Picture of 
 -->
 ```html
 <!-- the tag -->
-<apod-request id="myRequest" api-key="MY_API_KEY"></apod-request>
+<apod-request id="myRequest" api-key="my-nasa-api-key"></apod-request>
 
 <!-- example handling -->
 <script>
@@ -38,7 +38,7 @@ Simple Polymer 2.0 element for integrating with NASA&#39;s Astromony Picture of 
 
 ## Default usage
 ```html
-<apod-request api-key="MY_API_KEY"></apod-request>
+<apod-request api-key="my-nasa-api-key"></apod-request>
 <!-- to listen for an event -->
 <script>
     const request = document.querySelector('apod-request');

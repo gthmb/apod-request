@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="/bower_components/polymer/lib/utils/debounce.html">
 
 <dom-module id="apod-request">
     <template>
@@ -17,6 +18,7 @@
          * @event request-complete
          */
         class ApodRequest extends Polymer.Element {
+
             static get is() {
                 return 'apod-request';
             }
@@ -108,14 +110,19 @@
             _reRequest() {
                 if( this._xhr ) {
                     this.cancelRequest();
-                    this.makeRequest();
                 }
+
+                this._debouncer = Polymer.Debouncer.debounce(
+                    this._debouncer,
+                    Polymer.Async.timeOut.after(300),
+                    this.makeRequest
+                );
             }
 
             makeRequest() {
                 let requestUrl = this._baseUrl + this.apiKey;
 
-                if( !this.apiKey ) {
+                if( !this.apiKey || this.apiKey === 'my-nasa-api-key') {
                     return;
                 }
 
