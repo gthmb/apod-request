@@ -32,7 +32,7 @@
                     apiKey: {
                         type: String,
                         value: 'my-nasa-api-key',
-                        observer: '_reRequest'
+                        observer: '_debounceRequest'
                     },
 
                     /**
@@ -41,7 +41,7 @@
                     hd: {
                         type: Boolean,
                         value: false,
-                        observer: '_reRequest'
+                        observer: '_debounceRequest'
                     },
 
                     /**
@@ -50,7 +50,7 @@
                     date: {
                         type: String,
                         value: null,
-                        observer: '_reRequest'
+                        observer: '_debounceRequest'
                     },
 
                     /**
@@ -104,22 +104,23 @@
 
             ready() {
                 super.ready();
-                this.makeRequest();
+                // this.makeRequest();
+                this._debounceRequest();
             }
 
-            _reRequest() {
-                if( this._xhr ) {
-                    this.cancelRequest();
-                }
-
+            _debounceRequest() {
                 this._debouncer = Polymer.Debouncer.debounce(
                     this._debouncer,
-                    Polymer.Async.timeOut.after(300),
+                    Polymer.Async.timeOut.after(10),
                     () => { this.makeRequest(); }
                 );
             }
 
             makeRequest() {
+                if( this._xhr ) {
+                    this.cancelRequest();
+                }
+                
                 let requestUrl = this._baseUrl + this.apiKey;
 
                 if( !this.apiKey || this.apiKey === 'my-nasa-api-key') {
@@ -138,6 +139,9 @@
 
                 this._xhr = new XMLHttpRequest();
                 this._xhr.addEventListener("load", () => {
+                    if( !this._xhr.responseText ){
+                        return;
+                    }
                     const data = JSON.parse(this._xhr.responseText);
 
                     if (this._xhr.status >= 400) {
