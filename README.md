@@ -27,7 +27,7 @@ Simple Polymer 2.0 element for integrating with NASA&#39;s Astromony Picture of 
   results = document.querySelector("#results");
 
   request.addEventListener('data-changed', (evt) => {
-    results.innerHTML = JSON.stringify(req.data, null, 2);
+    results.innerHTML = JSON.stringify(myRequest.data, null, 2);
   });
 
   request.addEventListener('request-error', (evt) => {
